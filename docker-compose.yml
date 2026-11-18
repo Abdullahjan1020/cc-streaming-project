@@ -1,0 +1,24 @@
+services:
+  user-service:
+    build: ./src/user-service
+    image: user-service:1.0
+
+  product-service:
+    build: ./src/product-service
+    image: product-service:1.0
+
+  notification-service:
+    build: ./src/notification-service
+    image: notification-service:1.0
+    ports:
+      - "5004:5000"
+
+  order-service:
+    build: ./src/order-service
+    image: order-service:1.0
+    ports:
+      - "5003:5000"
+    depends_on:
+      - user-service
+      - product-service
+      - notification-service
