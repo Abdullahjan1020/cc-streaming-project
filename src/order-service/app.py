@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 USER_URL = os.environ.get("USER_SERVICE_URL", "http://user-service:5000")
 PRODUCT_URL = os.environ.get("PRODUCT_SERVICE_URL", "http://product-service:5000")
+NOTIFY_URL = os.environ.get("NOTIFICATION_SERVICE_URL", "http://notification-service:5000")
 
 orders = {}
 next_id = 1
@@ -70,6 +71,14 @@ def create_order():
     }
     orders[next_id] = order
     next_id = next_id + 1
+    try:
+        requests.post(
+            NOTIFY_URL + "/notify",
+            json = {"user": user["name"], "message": "Order placed: " + product["name"]},
+            timeout = 3,
+        )
+    except requests.exceptions.RequestException:
+        pass
     return jsonify(order), 201
 
 
