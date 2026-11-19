@@ -1,0 +1,10 @@
+{
+  "uri": "/orders*",
+  "methods": ["GET", "POST"],
+  "upstream": {
+    "type": "roundrobin",
+    "nodes": {
+      "order-service.shop.svc.cluster.local:5000": 1
+    }
+  }
+}
